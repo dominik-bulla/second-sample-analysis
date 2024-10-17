@@ -26,7 +26,121 @@ options(scipen = 999)
 # Packages --------------------------- --------------------------- ---------------------------
 library(readxl)
 library(tidyverse)
+library(robotoolbox)
 
 
 
-# Import data --------------------------- --------------------------- ---------------------------
+# Import baseline data --------------------------- --------------------------- ---------------------------
+# Import the data from kobo toolbox. The credentials are listed below. 
+
+kobo_setup(url = "https://kf.kobotoolbox.org/",
+           token = kobo_token(username = "domib",
+                              password = "!23KeZA2023",
+                              url = "https://kf.kobotoolbox.org"))
+assets <- kobo_asset_list()
+uid <- assets %>%
+  filter(assets$name == "JF-CPiE - The household survey_20221124_V05") %>%
+  pull(uid) %>%
+  first()
+asset <- kobo_asset(uid)
+HH <- kobo_submissions(kobo_asset(uid))
+baseline <- HH$main
+grid <- HH$g_hhmember
+rm(asset, assets, HH, uid)
+
+
+# Clean up baseline main data --------------------------- --------------------------- ---------------------------
+# The baseline survey consists of altogether three sections: the sections on 1) household heads; 2) caregivers; 3) young people.
+# Here, we only focus on the section on caregivers.
+# Other sections will be removed. 
+
+baseline <- baseline %>%
+  rename(index = "_index",
+         partner = GE0,
+         country = GE1,
+         unit = GE4,
+         subgroup = GE7,
+         date = GE8,
+         hhsize = HHH6,
+         hhchildren = HHH7,
+         consent_hhh = HHH4,
+         consent_cg = CG3.11,
+         consent_ad = AD4) %>%
+  select(index, partner, 
+         country, unit, subgroup, 
+         date, 
+         hhsize,
+         hhchildren,
+         consent_hhh, consent_cg, consent_ad) %>%
+  mutate(across(starts_with("consent_"), ~ ifelse(. == "yes", 1, 0))) %>%
+  mutate(partner = ifelse(partner == "PlanInternational", "Plan International", partner)) %>%
+  mutate(partner = ifelse(partner == "SavetheChildren", "Save the Children", partner)) %>%
+  mutate(partner = ifelse(partner == "TerresdesHommes", "Terres des Hommes", partner)) %>%
+  mutate(partner = ifelse(partner == "WorldVision", "World Vision", partner)) %>%
+  filter(consent_hhh == 1 & consent_cg == 1 & consent_ad == 1) %>%
+  select(-c(consent_hhh, consent_cg, consent_ad))
+
+
+
+# Clean up baseline grid --------------------------- --------------------------- ---------------------------
+# The household survey consists of a survey grid to gauge basic socio-demographic data on the different household members
+# In this part, the grid data will be cleaned up
+
+grid <- grid %>%
+  rename(index = "_parent_index",
+         index2 = "_index",
+         name = HHH8.1,
+         relationship = HHH8.2,
+         age = HHH8.3,	
+         gender = HHH8.4,	
+         maritalstatus = HHH8.5,		
+         children = HHH8.6,	
+         childrenMany = HHH8.6.1,	
+         enrollment = HHH8.7,		
+         edu_level = HHH8.9,		
+         working = HHH8.10,			
+         dis_seeing = HHH8.121,	
+         dis_hearing = HHH8.122,	
+         dis_walking = HHH8.123,	
+         dis_concentrating = HHH8.124,	
+         dis_selfcare = HHH8.125,	
+         dis_communicating = HHH8.126) %>%
+  select(index, index2,
+         name, relationship, age, gender, maritalstatus,		
+         children,	childrenMany,	
+         enrollment, edu_level,		
+         working,			
+         dis_seeing,	dis_hearing, dis_walking,	dis_concentrating,	dis_selfcare,	dis_communicating) %>%
+  mutate(across(starts_with("dis_"), ~ ifelse(. == "No_–_no_difficulty", 0, 1))) 
+
+
+
+# Merge baseline grid and baseline main survey --------------------------- --------------------------- ---------------------------
+# We need to merge the baseline grid with the baseline main survey. 
+# The survey grid was set up in a way that the first family member with children below 18 years of age was the caregiver 
+# to be surveyed
+
+caregivers <- grid %>%
+  filter(children == "yesd") %>%
+  group_by(index) %>%
+  summarise(index2 = min(index2)) %>%
+  mutate(caregiver = 1) %>%
+  select(-c(index))
+
+grid <- merge(grid, caregivers, by = "index2", all.x = TRUE) %>%
+  filter(caregiver == 1) %>%
+  select(-c(caregiver, index2, name)) 
+
+colnames(grid)[colnames(grid) != "index"] <- paste0(colnames(grid)[colnames(grid) != "index"], "_cg")    
+
+baseline <- merge(baseline, grid, by = "index") 
+rm(grid, caregivers)
+
+
+
+# Include sampling weights --------------------------- --------------------------- ---------------------------
+
+
+
+
+
