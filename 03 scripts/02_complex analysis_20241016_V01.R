@@ -24,202 +24,169 @@ options(scipen = 999)
 
 
 # Packages --------------------------- --------------------------- ---------------------------
+library(dplyr)
 library(survey)
+library(gt)
+
+
+# Load data --------------------------- --------------------------- ---------------------------
+baseline <- read.csv("02 processed data/baseline_clean_20230323.csv")
 
 
 
-# The analysis of the caregiver socio-demographic data --------------------------- --------------------------- ---------------------------
+# The analysis of the caregiver socio-demographic data (partner specific) --------------------------- --------------------------- ---------------------------
+# standard errros defined as standard deviation/ sqrt(length)
 
-caregivers <- surveyhh %>%
-  group_by(country, IP) %>%
-  dplyr::summarise(Age = round(mean(cg_age, na.rm = TRUE),2),
-                   `Age (SD)` = round(sd(cg_age, na.rm = TRUE),2),
-                   `Female (in %)`  = round(mean(cg_gender, na.rm = TRUE),4) * 100,
-                   `Married (in %)`  = round(mean(cg_maritalstatus, na.rm = TRUE),4) * 100,
-                   `No education (in %)`  = round(mean(cg_noschool, na.rm = TRUE),4) * 100,
-                   `Working (in %)`  = round(mean(cg_working, na.rm = TRUE),4) * 100,
-                   `Disabled (in %)`  = round(mean(cg_disability, na.rm = TRUE),4) * 100,                   
-                   `# of children` = round(mean(cg_children, na.rm = TRUE),2),
-                   `# of children (Sd)` = round(sd(cg_children, na.rm = TRUE),2))
-write.csv(caregivers, "06 Data/0605 Tables/09 stats caregivers_20230329.csv", row.names = FALSE)
+caregivers <- baseline %>%
+  group_by(partner) %>%
+  dplyr::summarise(Age = round(mean(age_cg, na.rm = TRUE), 2),
+                   `Age (se)` = round(sd(age_cg, na.rm = TRUE)/ sqrt(length(age_cg)), 2),
+                   `Female (in %)`  = round(mean(female_cg, na.rm = TRUE), 4) * 100,
+                   `Female (se)`  = round(sd(female_cg, na.rm = TRUE)/ sqrt(length(female_cg)), 4) * 100,
+                   `Single (in %)`  = round(mean(single_cg, na.rm = TRUE), 4) * 100,
+                   `Single (se)`  = round(sd(single_cg, na.rm = TRUE)/ sqrt(length(single_cg)), 4) * 100,                   
+                   `No education (in %)`  = round(mean(noschool_cg, na.rm = TRUE), 4) * 100,
+                   `No education (se)`  = round(sd(noschool_cg, na.rm = TRUE)/ sqrt(length(noschool_cg)), 4) * 100,                   
+                   `Working (in %)`  = round(mean(working_cg, na.rm = TRUE), 4) * 100,
+                   `Working (se)`  = round(sd(working_cg, na.rm = TRUE)/ sqrt(length(working_cg)), 4) * 100,                   
+                   `Disabled (in %)`  = round(mean(pwd_cg, na.rm = TRUE), 4) * 100,
+                   `Disabled (se)`  = round(mean(pwd_cg, na.rm = TRUE)/ sqrt(length(pwd_cg)), 4) * 100,                   
+                   `# of children` = round(mean(childrenMany_cg, na.rm = TRUE), 2),
+                   `# of children (Se)` = round(sd(childrenMany_cg, na.rm = TRUE)/ sqrt(length(childrenMany_cg)), 2))
 
 
 
-# 10.7) Indicator 2: Table: % of caregivers who report increased knowledge of caring and --------------------------- --------------------------- ---------------------------
-# protection behaviours towards children under their care compared to the beginning of the project.
-# the indicator covers 2 aspects:
-# 1) knowledge of caring behaviours [CGKC1 through CGKC12]: create a dummy on whether or caregiver has full score
-# code Absolutely untrue/Mostly untrue/Can’t say true or untrue as 0; code Mostly true/Absolutely true as 1. 
-# 2) knowledge of protection behaviours [CGKP1]: create a dummy that indicates whether or not a CM was aware of all CPR
-# create indicator that sums up 1) and 2) and calculate percentage. then table results
+# The analysis of the caregiver socio-demographic data (global averages without sampling weights) --------------------------- --------------------------- ---------------------------
+# This socio-demographic summary does not incorporate sampling weights 
 
-indicator2 <- surveyhh %>%
-  group_by(country, IP) %>%
-  dplyr::summarise(Indicator2 = round(mean(indicator02S_0560, na.rm = TRUE),4)*100) %>%
-  mutate(Sample = "all",
-         location = paste0(paste0(country, "/"), IP))
-ggplot(indicator2) +
-  geom_col(aes(
-    x = location,
-    y = Indicator2
-  ),
-  fill =  unhcr_pal(n = 12, "pal_blue"),
-  position = position_dodge(width = 0.7),
-  width = 0.6
-  ) +
-  geom_text(aes(
-    x = location,
-    y = Indicator2,
-    label = Indicator2
-  ),
-  position = position_dodge(width = 0.7),
-  vjust = -1,
-  size = 8 / .pt
-  ) +
-  labs(
-    #    title = "Baseline values for indicator 2 | all partner countries",
-    #    subtitle = "Results from the baseline surveys (caregivers only) | Proportion of respondents (in %)",
-    caption = "Source: Baseline 2022/23 \n© JF-CPiE"
-  ) +
-  scale_x_discrete() +
-  scale_y_continuous(expand = expansion(c(0, 0.1))) +
-  theme_unhcr(
-    grid = FALSE,
-    axis = "x",
-    axis_title = FALSE,
-    axis_text = "x"
-  ) +
-  guides(fill = guide_legend(nrow = 1, byrow = TRUE)) +
-  theme(axis.text.x=element_text(color = "black", size=11, angle=90, vjust=.8, hjust=0.8))
+caregivers_global <- baseline %>%
+  dplyr::summarise(Age = round(mean(age_cg, na.rm = TRUE), 2),
+                   `Age (se)` = round(sd(age_cg, na.rm = TRUE)/ sqrt(length(age_cg)), 2),
+                   `Female (in %)`  = round(mean(female_cg, na.rm = TRUE), 4) * 100,
+                   `Female (se)`  = round(sd(female_cg, na.rm = TRUE)/ sqrt(length(female_cg)), 4) * 100,
+                   `Single (in %)`  = round(mean(single_cg, na.rm = TRUE), 4) * 100,
+                   `Single (se)`  = round(sd(single_cg, na.rm = TRUE)/ sqrt(length(single_cg)), 4) * 100,                   
+                   `No education (in %)`  = round(mean(noschool_cg, na.rm = TRUE), 4) * 100,
+                   `No education (se)`  = round(sd(noschool_cg, na.rm = TRUE)/ sqrt(length(noschool_cg)), 4) * 100,                   
+                   `Working (in %)`  = round(mean(working_cg, na.rm = TRUE), 4) * 100,
+                   `Working (se)`  = round(sd(working_cg, na.rm = TRUE)/ sqrt(length(working_cg)), 4) * 100,                   
+                   `Disabled (in %)`  = round(mean(pwd_cg, na.rm = TRUE), 4) * 100,
+                   `Disabled (se)`  = round(mean(pwd_cg, na.rm = TRUE)/ sqrt(length(pwd_cg)), 4) * 100,                   
+                   `# of children` = round(mean(childrenMany_cg, na.rm = TRUE), 2),
+                   `# of children (Se)` = round(sd(childrenMany_cg, na.rm = TRUE)/ sqrt(length(childrenMany_cg)), 2)) %>%
+  mutate(partner = "Global average (without sampling weights applied)")
 
-ggsave("Indicator2 (global).png",
-       plot = last_plot(),
-       device = png(),
-       path = "06 Data/0604 Graphs/",
-       scale = 1,
-       dpi = 100,
-       limitsize = TRUE,
-       bg = 'white')
-dev.off()
 
-indicator2 <- surveyhh %>%
-  group_by(country, IP) %>%
-  dplyr::summarise(Indicator2 = round(mean(indicator02S_0560, na.rm = TRUE),4)*100) %>%
-  mutate(Sample = "all")
-indicator2F <- surveyhh[surveyhh$gender_CG == 1,] %>%
-  group_by(country, IP) %>%
-  dplyr::summarise(Indicator2 = round(mean(indicator02S_0560, na.rm = TRUE),4)*100) %>%
-  mutate(Sample = "bfemale") %>%
-  filter(!is.na(Indicator2))
-indicator2M <- surveyhh[surveyhh$gender_CG == 0,] %>%
-  group_by(country, IP) %>%
-  dplyr::summarise(Indicator2 = round(mean(indicator02S_0560, na.rm = TRUE),4)*100) %>%
-  mutate(Sample = "cmale") %>%
-  filter(!is.na(Indicator2))
-indicator2D <- surveyhh[surveyhh$disability_CG == 1,] %>%
-  group_by(country, IP) %>%
-  dplyr::summarise(Indicator2 = round(mean(indicator02S_0560, na.rm = TRUE),4)*100) %>%
-  mutate(Sample = "disabled") %>%
-  filter(!is.na(Indicator2))
-indicator2ND <- surveyhh[surveyhh$disability_CG == 0,] %>%
-  group_by(country, IP) %>%
-  dplyr::summarise(Indicator2 = round(mean(indicator02S_0560, na.rm = TRUE),4)*100) %>%
-  mutate(Sample = "not disabled") %>%
-  filter(!is.na(Indicator2))
-indicator2HC <- surveyhh[surveyCM$type_hh == "Host community HH",] %>%
-  group_by(country, IP) %>%
-  dplyr::summarise(Indicator2 = round(mean(indicator02S_0560, na.rm = TRUE),4)*100) %>%
-  mutate(Sample = "xHost community") %>%
-  filter(!is.na(Indicator2))
-indicator2IDP <- surveyhh[surveyCM$type_hh == "Internally displaced HH",] %>%
-  group_by(country, IP) %>%
-  dplyr::summarise(Indicator2 = round(mean(indicator02S_0560, na.rm = TRUE),4)*100) %>%
-  mutate(Sample = "yIDP") %>%
-  filter(!is.na(Indicator2))
-indicator2REF <- surveyhh[surveyCM$type_hh == "Refugee HH",] %>%
-  group_by(country, IP) %>%
-  dplyr::summarise(Indicator2 = round(mean(indicator02S_0560, na.rm = TRUE),4)*100) %>%
-  mutate(Sample = "zRefugees") %>%
-  filter(!is.na(Indicator2))
-indicator2 <- rbind(indicator2, 
-                    indicator2F, indicator2M, 
-                    indicator2D, indicator2ND,
-                    indicator2HC, indicator2IDP, indicator2REF)
-indicator2 <- indicator2 %>% 
-  filter(!is.na(country)) %>%
-  arrange(country, IP, Sample) 
-indicator2 <- indicator2 %>%
-  mutate(Sample = ifelse(Sample == "bfemale", "female", Sample),
-         Sample = ifelse(Sample == "cmale", "male", Sample),
-         Sample = ifelse(Sample == "xHost community", "host community", Sample),
-         Sample = ifelse(Sample == "yIDP", "IDP", Sample),
-         Sample = ifelse(Sample == "zRefugees", "refugees", Sample))
-indicator2 <- as.data.frame(indicator2)
-rm(indicator2F, indicator2M, indicator2D, indicator2ND)
-indicator2$Sample <- factor((indicator2$Sample), levels = c("all", "female", "male", "disabled", "not disabled", "host community", "IDP", "refugees"))
+# The analysis of the caregiver socio-demographic data (global averages with sampling weights) --------------------------- --------------------------- ---------------------------
+# This socio-demographic summary incorporates sampling weights 
 
-locs <- unique(indicator2$country)
-for (loc in locs) {
-  print(ggplot(indicator2[indicator2$country == loc,]) +
-          geom_col(aes(
-            x = IP,
-            y = Indicator2,
-            fill = Sample
-          ),
-          position = position_dodge(width = 0.7),
-          width = 0.6
-          ) +
-          geom_text(aes(
-            x = IP,
-            y = Indicator2,
-            group = Sample,
-            label = Indicator2
-          ),
-          position = position_dodge(width = 0.7),
-          vjust = -1,
-          size = 8 / .pt
-          ) +
-          scale_fill_unhcr_d(
-            palette = "pal_unhcr",
-            nmax = length(unique(indicator2$Sample)),
-            order = c(1 : length(unique(indicator2$Sample)))
-          ) +
-          labs(
-            #      title = paste0("Baseline values for indicator 2 | ", paste0(loc, " only")),
-            #      subtitle = "Results from the household survey (caregivers only) | Proportion of respondents (in %)",
-            caption = "Source: Baseline 2022/23 \n© JF-CPiE"
-          ) +
-          scale_x_discrete() +
-          scale_y_continuous(expand = expansion(c(0, 0.1))) +
-          theme_unhcr(
-            grid = FALSE,
-            axis = "x",
-            axis_title = FALSE,
-            axis_text = "x"
-          ) +
-          guides(fill = guide_legend(nrow = 1, byrow = TRUE)) +
-          theme(axis.text.x=element_text(color = "black", size=11, angle=90, vjust=.8, hjust=0.8))
+# Define the baseline dataset as a complex survey design. 
+baseline_design <- svydesign(ids = ~1, weights = ~weights, data = baseline)
+
+caregivers_global_weights <- data.frame(partner = "Global average (sampling weights applied)",
+                                Age = round(mean(svymean(~age_cg, baseline_design, na.rm = TRUE)), 2),
+                                "Age (se)" = round((SE(svymean(~age_cg, baseline_design, na.rm = TRUE)))[1,1], 2),
+                                `Female (in %)` = round(mean(svymean(~female_cg, baseline_design, na.rm = TRUE)), 4) * 100,
+                                `Female (se)` = round((SE(svymean(~female_cg, baseline_design, na.rm = TRUE)))[1,1], 4) * 100,
+                                `Single (in %)`  = round(mean(svymean(~single_cg, baseline_design, na.rm = TRUE)), 4) * 100,
+                                `Single (se)`  = round((SE(svymean(~single_cg, baseline_design, na.rm = TRUE)))[1,1], 4) * 100,                   
+                                `No education (in %)`  = round(mean(svymean(~noschool_cg, baseline_design, na.rm = TRUE)), 4) * 100,
+                                `No education (se)`  = round((SE(svymean(~noschool_cg, baseline_design, na.rm = TRUE)))[1,1], 4) * 100,                   
+                                `Working (in %)`  = round(mean(svymean(~working_cg, baseline_design, na.rm = TRUE)), 4) * 100,
+                                `Working (se)`  = round((SE(svymean(~working_cg, baseline_design, na.rm = TRUE)))[1,1], 4) * 100,                   
+                                `Disabled (in %)`  = round(mean(svymean(~pwd_cg, baseline_design, na.rm = TRUE)), 4) * 100,
+                                `Disabled (se)`  = round((SE(svymean(~pwd_cg, baseline_design, na.rm = TRUE)))[1,1], 4) * 100,                   
+                                `# of children` = round(mean(svymean(~childrenMany_cg, baseline_design, na.rm = TRUE)), 2),
+                                `# of children (Se)` = round((SE(svymean(~childrenMany_cg, baseline_design, na.rm = TRUE)))[1,1], 2))
+# Rename the table to make it match the naming of the previous two summary tables. 
+colnames(caregivers_global_weights) <- colnames(caregivers)
+
+
+
+# Produce summary table --------------------------- --------------------------- ---------------------------
+
+caregivers <- rbind(caregivers, caregivers_global, caregivers_global_weights)
+rm(caregivers_global_weights, caregivers_global)
+
+n <- length(baseline$X)
+caregivers_sociodemographics <- gt(caregivers) %>%
+  tab_header(title = "Selected socio-demographic characteristics of caregivers surveyed",
+             subtitle = paste("n = ", n)) %>%
+  tab_options(
+    heading.align = "left"
+  ) %>%
+  # load data
+  fmt_number(columns = c(partner,
+                         Age, `Age (se)`, 
+                         `Female (in %)`, `Female (se)`,
+                         `Single (in %)`, `Single (se)`, 
+                         `No education (in %)`, `No education (se)`, 
+                         `Working (in %)`, `Working (se)`, 
+                         `Disabled (in %)`, `Disabled (se)`,
+                         `# of children`, `# of children (Se)`), decimals = 2) %>%
+  tab_source_note(source_note = html("Note: 'se' refers to standard errors<br>
+                                     Source: Baseline 2022/23 © CONSORTIUM")) %>%
+  # change the depiction of the column headers
+  cols_label(
+    partner = "Partner",
+    Age = html("Age<br>  "),
+    `Age (se)` = "se", 
+    `Female (in %)` = html("Female<br>(in %)"), 
+    `Female (se)` = "se",
+    `Single (in %)` = html("Single<br>(in %)"), 
+    `Single (se)` = "se", 
+    `No education (in %)` = html("No edu.<br>(in %)"), 
+    `No education (se)` = "se", 
+    `Working (in %)` = html("Working<br>(in %)"), 
+    `Working (se)` = "se", 
+    `Disabled (in %)` = html("Disabled<br>(in %)"), 
+    `Disabled (se)` = "se",
+    `# of children` = html("# of<br>children"),
+    `# of children (Se)` = "se"
+  ) %>%
+  #format column headers
+  cols_align(
+    align = "center",
+    columns = c(Age, `Age (se)`, 
+                `Female (in %)`, `Female (se)`,
+                `Single (in %)`, `Single (se)`, 
+                `No education (in %)`, `No education (se)`, 
+                `Working (in %)`, `Working (se)`, 
+                `Disabled (in %)`, `Disabled (se)`,
+                `# of children`, `# of children (Se)`)
+  ) %>%
+  # change font colour to colour of the client
+  tab_style(
+    style = cell_text(color = "blue"),
+    locations = cells_title(groups = c("title", "subtitle"))
+  ) %>%
+  tab_style(
+    style = cell_text(color = "blue"),
+    locations = cells_column_labels(columns = everything())
+  ) %>%
+  tab_style(
+    style = cell_text(color = "blue"),
+    locations = cells_body(columns = everything())
+  ) %>%
+  tab_style(
+    style = cell_text(color = "blue"),
+    locations = cells_source_notes()
+  ) %>%
+  tab_style(
+    style = cell_text(color = "blue"),
+    locations = cells_source_notes()
   )
-  
-  ggsave(paste0(paste0("10.7_indicator2_",loc),".png"),
-         plot = last_plot(),
-         device = png(),
-         path = "06 Data/0604 Graphs/",
-         scale = 1,
-         dpi = 100,
-         limitsize = TRUE,
-         bg = 'white')
-  dev.off()
-}
+gtsave(caregivers_sociodemographics, filename = "04 results/caregivers_sociodemographics.html")
+rm(n)
 
-indicator2 <- indicator2 %>%
-  select(country, IP, Sample, Indicator2) %>%
-  rename(Country = "country",
-         Partner = "IP",
-         Population = "Sample",
-         `Baseline value` = Indicator2) 
-indicator2 <- as.data.frame(indicator2)
-write.csv(indicator2, "06 Data/0605 Tables/10.7 indicator2 breakdown_20230330.csv", row.names = FALSE)
+
+# methodology
+# 1) include sampling weights
+# 2) you need a table with total populations
+# 3) you need a table with sample size
+# 4) include sampling weights in annex
+# 5) mention standard errors
+# 6) mention results
 
 
 

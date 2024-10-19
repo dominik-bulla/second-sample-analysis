@@ -54,9 +54,10 @@ rm(asset, assets, HH, uid)
 # Here, we only focus on the section on caregivers.
 # Other sections will be removed. 
 
+# Rename variables
 baseline <- baseline %>%
   rename(index = "_index",
-         partner = GE0,
+         organisation = GE0,
          country = GE1,
          unit = GE4,
          subgroup = GE7,
@@ -65,27 +66,63 @@ baseline <- baseline %>%
          hhchildren = HHH7,
          consent_hhh = HHH4,
          consent_cg = CG3.11,
-         consent_ad = AD4) %>%
-  select(index, partner, 
-         country, unit, subgroup, 
+         consent_ad = AD4) 
+
+# Select relevant variables
+baseline <- baseline %>%
+  select(index, country,
+         organisation, unit, subgroup, 
          date, 
          hhsize,
          hhchildren,
-         consent_hhh, consent_cg, consent_ad) %>%
-  mutate(across(starts_with("consent_"), ~ ifelse(. == "yes", 1, 0))) %>%
-  mutate(partner = ifelse(partner == "PlanInternational", "Plan International", partner)) %>%
-  mutate(partner = ifelse(partner == "SavetheChildren", "Save the Children", partner)) %>%
-  mutate(partner = ifelse(partner == "TerresdesHommes", "Terres des Hommes", partner)) %>%
-  mutate(partner = ifelse(partner == "WorldVision", "World Vision", partner)) %>%
-  filter(consent_hhh == 1 & consent_cg == 1 & consent_ad == 1) %>%
-  select(-c(consent_hhh, consent_cg, consent_ad))
+         consent_hhh, consent_cg, consent_ad) 
 
+# Clean up names of organisations
+baseline <- baseline %>%
+  mutate(across(starts_with("consent_"), ~ ifelse(. == "yes", 1, 0))) %>%
+  mutate(organisation = ifelse(organisation == "PlanInternational", "Plan International", organisation)) %>%
+  mutate(organisation = ifelse(organisation == "SavetheChildren", "Save the Children", organisation)) %>%
+  mutate(organisation = ifelse(organisation == "TerresdesHommes", "Terre des Hommes", organisation)) %>%
+  mutate(organisation = ifelse(organisation == "WorldVision", "World Vision", organisation)) 
+
+# Clean up country names
+baseline <- baseline %>%
+  mutate(country = ifelse(country == "RepubliqueCentrafricaine", "CAR", country)) %>%
+  mutate(country = ifelse(country == "SouthSudan", "South Sudan", country)) %>%
+  mutate(country = ifelse(country == "Burkina", "Burkina Faso", country)) %>%
+  mutate(country = ifelse(country == "Bangladesh" & organisation == "ChildFund", "Burkina Faso", country)) %>%
+  mutate(country = ifelse(country == "South Sudan" & organisation == "ChildFund", "Ethiopia", country)) 
+
+# create variable on implementing partners.  
+baseline <- baseline %>%
+  mutate(partner = paste(country, organisation))
+
+# Clean up population sub-groups 
+baseline <- baseline %>%
+  mutate(subgroup = ifelse(subgroup == "Refugee_HH", "Refugees", subgroup)) %>%
+  mutate(subgroup = ifelse(subgroup == "Internally_displaced_HH", "IDPs", subgroup)) %>%  
+  mutate(subgroup = ifelse(subgroup == "Host_community_HH", "Hosts", subgroup)) 
+
+# Some sub-groups were wrongly classified (compare prop-baseline with prop_pop tables below)
+baseline <- baseline %>%
+  mutate(subgroup = ifelse(partner == "CAR Plan International", "IDPs", subgroup)) %>%
+  mutate(subgroup = ifelse(partner == "CAR Plan International", "IDPs", subgroup))
+
+# Remove those entries for whom no research consents were obtained 
+baseline <- baseline %>%
+  filter(consent_hhh == 1 & consent_cg == 1 & consent_ad == 1) %>%
+  select(-c(consent_hhh, consent_cg, consent_ad)) 
+
+# Sort data by partner
+baseline <- baseline %>%
+  arrange(partner)
 
 
 # Clean up baseline grid --------------------------- --------------------------- ---------------------------
 # The household survey consists of a survey grid to gauge basic socio-demographic data on the different household members
 # In this part, the grid data will be cleaned up
 
+# Rename variables
 grid <- grid %>%
   rename(index = "_parent_index",
          index2 = "_index",
@@ -104,16 +141,34 @@ grid <- grid %>%
          dis_walking = HHH8.123,	
          dis_concentrating = HHH8.124,	
          dis_selfcare = HHH8.125,	
-         dis_communicating = HHH8.126) %>%
+         dis_communicating = HHH8.126) 
+
+# clean up data on disability status and create dummy on poeple with disabilities (pwd) 
+grid <- grid %>%
+  mutate(across(starts_with("dis_"), ~ ifelse(. == "No_–_no_difficulty", 0, 1))) %>%
+  mutate(pwd = do.call(pmax, across(starts_with("dis_"))))
+
+# Clean up some other socio-demographic variables 
+grid <- grid %>%
+  mutate(noschool = ifelse(edu_level == "Never_attended_school", 1, 0))  %>%
+  mutate(working = ifelse(working == "yesd", 1, 0)) %>%
+  mutate(gender = ifelse(gender == "Female", 1, 0)) %>%
+  rename("female" = gender) %>%
+  mutate(gender = ifelse(gender == "Female", 1, 0)) %>%
+
+  
+baseline$maritalstatus_cg
+  
+# Select relevant variables
+grid <- grid %>%
   select(index, index2,
-         name, relationship, age, gender, maritalstatus,		
+         name, relationship, age, female, maritalstatus,		
          children,	childrenMany,	
-         enrollment, edu_level,		
+         enrollment, edu_level,	noschool,	
          working,			
-         dis_seeing,	dis_hearing, dis_walking,	dis_concentrating,	dis_selfcare,	dis_communicating) %>%
-  mutate(across(starts_with("dis_"), ~ ifelse(. == "No_–_no_difficulty", 0, 1))) 
+         pwd) 
 
-
+baseline$maritalstatus_cg
 
 # Merge baseline grid and baseline main survey --------------------------- --------------------------- ---------------------------
 # We need to merge the baseline grid with the baseline main survey. 
@@ -139,6 +194,40 @@ rm(grid, caregivers)
 
 
 # Determine sampling weights --------------------------- --------------------------- ---------------------------
+# Create population overview table on percentage across partners and sub-groups. 
+prop_pop <- read_excel("01 raw data/Beneficiary table_20221006.xlsx") %>%
+  rename("organisation" = Partner) %>%
+  mutate(organisation = ifelse(organisation == "Plan", "Plan International", organisation)) %>%
+  mutate(organisation = ifelse(organisation == "Terres des Hommes", "Terre des Hommes", organisation)) %>%
+  mutate(partner = paste(Country, organisation)) %>%
+  select(partner, Hosts, IDPs, Refugees) %>%
+  arrange(partner) 
+
+# Turn overview table into percentage (sum arcoss columns and rows is 100%)
+prop_pop[2:4] <- round(prop_pop[2:4] / sum(prop_pop[2:4]), 4)
+
+# Create baseline overview table on percentage across partners and sub-groups. 
+# Turn overview table into percentage (sum arcoss columns and rows is 100%)
+prop_baseline <- round(prop.table(table(baseline$partner, baseline$subgroup)), 4)
+
+# Create matrix with weights 
+weights <- prop_pop[,2:4]/ prop_baseline
+row.names(weights) <- row.names(prop_baseline)
+
+# Incorporate sampling weights into the baseline survey
+baseline$weights <- 0
+for(partner in rownames(weights)) {
+  for(group in colnames(weights)) {
+    value <- weights[rownames(weights) == partner, colnames(weights) == group]
+    baseline$weights[baseline$partner == partner & baseline$subgroup == group] <- value
+  }
+}
+rm(group, partner, value, prop_baseline, prop_pop, weights)
+
+
+
+# Save dataset --------------------------- --------------------------- ---------------------------
+write.csv(baseline, "02 processed data/baseline_clean_20230323.csv")
 
 
 

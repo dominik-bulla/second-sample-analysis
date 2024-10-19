@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+
+</head>
+<body>
+<div id="appeosditu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+  <style>#appeosditu table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#appeosditu thead, #appeosditu tbody, #appeosditu tfoot, #appeosditu tr, #appeosditu td, #appeosditu th {
+  border-style: none;
+}
+
+#appeosditu p {
+  margin: 0;
+  padding: 0;
+}
+
+#appeosditu .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#appeosditu .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#appeosditu .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#appeosditu .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#appeosditu .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#appeosditu .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#appeosditu .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#appeosditu .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#appeosditu .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#appeosditu .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#appeosditu .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#appeosditu .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#appeosditu .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#appeosditu .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#appeosditu .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#appeosditu .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#appeosditu .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#appeosditu .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#appeosditu .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#appeosditu .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#appeosditu .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#appeosditu .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#appeosditu .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#appeosditu .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#appeosditu .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#appeosditu .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#appeosditu .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#appeosditu .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#appeosditu .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#appeosditu .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#appeosditu .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#appeosditu .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#appeosditu .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#appeosditu .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#appeosditu .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#appeosditu .gt_left {
+  text-align: left;
+}
+
+#appeosditu .gt_center {
+  text-align: center;
+}
+
+#appeosditu .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#appeosditu .gt_font_normal {
+  font-weight: normal;
+}
+
+#appeosditu .gt_font_bold {
+  font-weight: bold;
+}
+
+#appeosditu .gt_font_italic {
+  font-style: italic;
+}
+
+#appeosditu .gt_super {
+  font-size: 65%;
+}
+
+#appeosditu .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#appeosditu .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#appeosditu .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#appeosditu .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#appeosditu .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#appeosditu .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#appeosditu .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#appeosditu .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#appeosditu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+  <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="15" class="gt_heading gt_title gt_font_normal" style="color: #0000FF;">Selected socio-demographic characteristics of caregivers surveyed</td>
+    </tr>
+    <tr class="gt_heading">
+      <td colspan="15" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="color: #0000FF;">n =  5283</td>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="partner">Partner</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="Age">Age<br>  </th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="Age-(se)">se</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="Female-(in-%)">Female<br>(in %)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="Female-(se)">se</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="Single-(in-%)">Single<br>(in %)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="Single-(se)">se</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="No-education-(in-%)">No edu.<br>(in %)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="No-education-(se)">se</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="Working-(in-%)">Working<br>(in %)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="Working-(se)">se</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="Disabled-(in-%)">Disabled<br>(in %)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="Disabled-(se)">se</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="a#-of-children"># of<br>children</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="color: #0000FF;" scope="col" id="a#-of-children-(Se)">se</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="partner" class="gt_row gt_left" style="color: #0000FF;">Bangladesh Plan International</td>
+<td headers="Age" class="gt_row gt_center" style="color: #0000FF;">40.08</td>
+<td headers="Age (se)" class="gt_row gt_center" style="color: #0000FF;">0.48</td>
+<td headers="Female (in %)" class="gt_row gt_center" style="color: #0000FF;">17.26</td>
+<td headers="Female (se)" class="gt_row gt_center" style="color: #0000FF;">1.91</td>
+<td headers="Single (in %)" class="gt_row gt_center" style="color: #0000FF;">6.85</td>
+<td headers="Single (se)" class="gt_row gt_center" style="color: #0000FF;">1.27</td>
+<td headers="No education (in %)" class="gt_row gt_center" style="color: #0000FF;">55.33</td>
+<td headers="No education (se)" class="gt_row gt_center" style="color: #0000FF;">2.51</td>
+<td headers="Working (in %)" class="gt_row gt_center" style="color: #0000FF;">70.56</td>
+<td headers="Working (se)" class="gt_row gt_center" style="color: #0000FF;">2.30</td>
+<td headers="Disabled (in %)" class="gt_row gt_center" style="color: #0000FF;">9.64</td>
+<td headers="Disabled (se)" class="gt_row gt_center" style="color: #0000FF;">0.49</td>
+<td headers="# of children" class="gt_row gt_center" style="color: #0000FF;">2.39</td>
+<td headers="# of children (Se)" class="gt_row gt_center" style="color: #0000FF;">0.05</td></tr>
+    <tr><td headers="partner" class="gt_row gt_left" style="color: #0000FF;">Bangladesh World Vision</td>
+<td headers="Age" class="gt_row gt_center" style="color: #0000FF;">44.14</td>
+<td headers="Age (se)" class="gt_row gt_center" style="color: #0000FF;">0.47</td>
+<td headers="Female (in %)" class="gt_row gt_center" style="color: #0000FF;">6.84</td>
+<td headers="Female (se)" class="gt_row gt_center" style="color: #0000FF;">1.19</td>
+<td headers="Single (in %)" class="gt_row gt_center" style="color: #0000FF;">5.96</td>
+<td headers="Single (se)" class="gt_row gt_center" style="color: #0000FF;">1.11</td>
+<td headers="No education (in %)" class="gt_row gt_center" style="color: #0000FF;">67.77</td>
+<td headers="No education (se)" class="gt_row gt_center" style="color: #0000FF;">2.20</td>
+<td headers="Working (in %)" class="gt_row gt_center" style="color: #0000FF;">53.20</td>
+<td headers="Working (se)" class="gt_row gt_center" style="color: #0000FF;">2.35</td>
+<td headers="Disabled (in %)" class="gt_row gt_center" style="color: #0000FF;">18.10</td>
+<td headers="Disabled (se)" class="gt_row gt_center" style="color: #0000FF;">0.85</td>
+<td headers="# of children" class="gt_row gt_center" style="color: #0000FF;">1.96</td>
+<td headers="# of children (Se)" class="gt_row gt_center" style="color: #0000FF;">0.06</td></tr>
+    <tr><td headers="partner" class="gt_row gt_left" style="color: #0000FF;">Burkina Faso ChildFund</td>
+<td headers="Age" class="gt_row gt_center" style="color: #0000FF;">43.76</td>
+<td headers="Age (se)" class="gt_row gt_center" style="color: #0000FF;">0.45</td>
+<td headers="Female (in %)" class="gt_row gt_center" style="color: #0000FF;">20.62</td>
+<td headers="Female (se)" class="gt_row gt_center" style="color: #0000FF;">1.49</td>
+<td headers="Single (in %)" class="gt_row gt_center" style="color: #0000FF;">16.01</td>
+<td headers="Single (se)" class="gt_row gt_center" style="color: #0000FF;">1.35</td>
+<td headers="No education (in %)" class="gt_row gt_center" style="color: #0000FF;">75.58</td>
+<td headers="No education (se)" class="gt_row gt_center" style="color: #0000FF;">1.58</td>
+<td headers="Working (in %)" class="gt_row gt_center" style="color: #0000FF;">32.29</td>
+<td headers="Working (se)" class="gt_row gt_center" style="color: #0000FF;">1.72</td>
+<td headers="Disabled (in %)" class="gt_row gt_center" style="color: #0000FF;">8.28</td>
+<td headers="Disabled (se)" class="gt_row gt_center" style="color: #0000FF;">0.30</td>
+<td headers="# of children" class="gt_row gt_center" style="color: #0000FF;">3.33</td>
+<td headers="# of children (Se)" class="gt_row gt_center" style="color: #0000FF;">0.09</td></tr>
+    <tr><td headers="partner" class="gt_row gt_left" style="color: #0000FF;">Burkina Faso Terre des Hommes</td>
+<td headers="Age" class="gt_row gt_center" style="color: #0000FF;">46.33</td>
+<td headers="Age (se)" class="gt_row gt_center" style="color: #0000FF;">0.70</td>
+<td headers="Female (in %)" class="gt_row gt_center" style="color: #0000FF;">21.91</td>
+<td headers="Female (se)" class="gt_row gt_center" style="color: #0000FF;">2.46</td>
+<td headers="Single (in %)" class="gt_row gt_center" style="color: #0000FF;">15.90</td>
+<td headers="Single (se)" class="gt_row gt_center" style="color: #0000FF;">2.18</td>
+<td headers="No education (in %)" class="gt_row gt_center" style="color: #0000FF;">81.63</td>
+<td headers="No education (se)" class="gt_row gt_center" style="color: #0000FF;">2.31</td>
+<td headers="Working (in %)" class="gt_row gt_center" style="color: #0000FF;">46.29</td>
+<td headers="Working (se)" class="gt_row gt_center" style="color: #0000FF;">2.97</td>
+<td headers="Disabled (in %)" class="gt_row gt_center" style="color: #0000FF;">8.83</td>
+<td headers="Disabled (se)" class="gt_row gt_center" style="color: #0000FF;">0.53</td>
+<td headers="# of children" class="gt_row gt_center" style="color: #0000FF;">3.82</td>
+<td headers="# of children (Se)" class="gt_row gt_center" style="color: #0000FF;">0.16</td></tr>
+    <tr><td headers="partner" class="gt_row gt_left" style="color: #0000FF;">CAR Plan International</td>
+<td headers="Age" class="gt_row gt_center" style="color: #0000FF;">35.79</td>
+<td headers="Age (se)" class="gt_row gt_center" style="color: #0000FF;">0.37</td>
+<td headers="Female (in %)" class="gt_row gt_center" style="color: #0000FF;">30.64</td>
+<td headers="Female (se)" class="gt_row gt_center" style="color: #0000FF;">1.80</td>
+<td headers="Single (in %)" class="gt_row gt_center" style="color: #0000FF;">28.96</td>
+<td headers="Single (se)" class="gt_row gt_center" style="color: #0000FF;">1.77</td>
+<td headers="No education (in %)" class="gt_row gt_center" style="color: #0000FF;">26.52</td>
+<td headers="No education (se)" class="gt_row gt_center" style="color: #0000FF;">1.72</td>
+<td headers="Working (in %)" class="gt_row gt_center" style="color: #0000FF;">63.87</td>
+<td headers="Working (se)" class="gt_row gt_center" style="color: #0000FF;">1.88</td>
+<td headers="Disabled (in %)" class="gt_row gt_center" style="color: #0000FF;">13.11</td>
+<td headers="Disabled (se)" class="gt_row gt_center" style="color: #0000FF;">0.51</td>
+<td headers="# of children" class="gt_row gt_center" style="color: #0000FF;">1.89</td>
+<td headers="# of children (Se)" class="gt_row gt_center" style="color: #0000FF;">0.05</td></tr>
+    <tr><td headers="partner" class="gt_row gt_left" style="color: #0000FF;">CAR SOS</td>
+<td headers="Age" class="gt_row gt_center" style="color: #0000FF;">37.40</td>
+<td headers="Age (se)" class="gt_row gt_center" style="color: #0000FF;">0.58</td>
+<td headers="Female (in %)" class="gt_row gt_center" style="color: #0000FF;">55.00</td>
+<td headers="Female (se)" class="gt_row gt_center" style="color: #0000FF;">2.56</td>
+<td headers="Single (in %)" class="gt_row gt_center" style="color: #0000FF;">47.11</td>
+<td headers="Single (se)" class="gt_row gt_center" style="color: #0000FF;">2.56</td>
+<td headers="No education (in %)" class="gt_row gt_center" style="color: #0000FF;">46.58</td>
+<td headers="No education (se)" class="gt_row gt_center" style="color: #0000FF;">2.56</td>
+<td headers="Working (in %)" class="gt_row gt_center" style="color: #0000FF;">47.37</td>
+<td headers="Working (se)" class="gt_row gt_center" style="color: #0000FF;">2.56</td>
+<td headers="Disabled (in %)" class="gt_row gt_center" style="color: #0000FF;">17.89</td>
+<td headers="Disabled (se)" class="gt_row gt_center" style="color: #0000FF;">0.92</td>
+<td headers="# of children" class="gt_row gt_center" style="color: #0000FF;">2.84</td>
+<td headers="# of children (Se)" class="gt_row gt_center" style="color: #0000FF;">0.07</td></tr>
+    <tr><td headers="partner" class="gt_row gt_left" style="color: #0000FF;">Colombia SOS</td>
+<td headers="Age" class="gt_row gt_center" style="color: #0000FF;">39.28</td>
+<td headers="Age (se)" class="gt_row gt_center" style="color: #0000FF;">0.55</td>
+<td headers="Female (in %)" class="gt_row gt_center" style="color: #0000FF;">82.40</td>
+<td headers="Female (se)" class="gt_row gt_center" style="color: #0000FF;">1.97</td>
+<td headers="Single (in %)" class="gt_row gt_center" style="color: #0000FF;">43.47</td>
+<td headers="Single (se)" class="gt_row gt_center" style="color: #0000FF;">2.56</td>
+<td headers="No education (in %)" class="gt_row gt_center" style="color: #0000FF;">18.93</td>
+<td headers="No education (se)" class="gt_row gt_center" style="color: #0000FF;">2.03</td>
+<td headers="Working (in %)" class="gt_row gt_center" style="color: #0000FF;">44.27</td>
+<td headers="Working (se)" class="gt_row gt_center" style="color: #0000FF;">2.57</td>
+<td headers="Disabled (in %)" class="gt_row gt_center" style="color: #0000FF;">27.73</td>
+<td headers="Disabled (se)" class="gt_row gt_center" style="color: #0000FF;">1.43</td>
+<td headers="# of children" class="gt_row gt_center" style="color: #0000FF;">2.06</td>
+<td headers="# of children (Se)" class="gt_row gt_center" style="color: #0000FF;">0.07</td></tr>
+    <tr><td headers="partner" class="gt_row gt_left" style="color: #0000FF;">Colombia Terre des Hommes</td>
+<td headers="Age" class="gt_row gt_center" style="color: #0000FF;">36.35</td>
+<td headers="Age (se)" class="gt_row gt_center" style="color: #0000FF;">0.82</td>
+<td headers="Female (in %)" class="gt_row gt_center" style="color: #0000FF;">65.73</td>
+<td headers="Female (se)" class="gt_row gt_center" style="color: #0000FF;">3.98</td>
+<td headers="Single (in %)" class="gt_row gt_center" style="color: #0000FF;">37.06</td>
+<td headers="Single (se)" class="gt_row gt_center" style="color: #0000FF;">4.05</td>
+<td headers="No education (in %)" class="gt_row gt_center" style="color: #0000FF;">4.20</td>
+<td headers="No education (se)" class="gt_row gt_center" style="color: #0000FF;">1.68</td>
+<td headers="Working (in %)" class="gt_row gt_center" style="color: #0000FF;">64.34</td>
+<td headers="Working (se)" class="gt_row gt_center" style="color: #0000FF;">4.02</td>
+<td headers="Disabled (in %)" class="gt_row gt_center" style="color: #0000FF;">19.58</td>
+<td headers="Disabled (se)" class="gt_row gt_center" style="color: #0000FF;">1.64</td>
+<td headers="# of children" class="gt_row gt_center" style="color: #0000FF;">1.98</td>
+<td headers="# of children (Se)" class="gt_row gt_center" style="color: #0000FF;">0.12</td></tr>
+    <tr><td headers="partner" class="gt_row gt_left" style="color: #0000FF;">Ethiopia ChildFund</td>
+<td headers="Age" class="gt_row gt_center" style="color: #0000FF;">42.86</td>
+<td headers="Age (se)" class="gt_row gt_center" style="color: #0000FF;">0.75</td>
+<td headers="Female (in %)" class="gt_row gt_center" style="color: #0000FF;">38.78</td>
+<td headers="Female (se)" class="gt_row gt_center" style="color: #0000FF;">3.01</td>
+<td headers="Single (in %)" class="gt_row gt_center" style="color: #0000FF;">25.10</td>
+<td headers="Single (se)" class="gt_row gt_center" style="color: #0000FF;">2.68</td>
+<td headers="No education (in %)" class="gt_row gt_center" style="color: #0000FF;">52.85</td>
+<td headers="No education (se)" class="gt_row gt_center" style="color: #0000FF;">3.08</td>
+<td headers="Working (in %)" class="gt_row gt_center" style="color: #0000FF;">57.41</td>
+<td headers="Working (se)" class="gt_row gt_center" style="color: #0000FF;">3.05</td>
+<td headers="Disabled (in %)" class="gt_row gt_center" style="color: #0000FF;">10.27</td>
+<td headers="Disabled (se)" class="gt_row gt_center" style="color: #0000FF;">0.63</td>
+<td headers="# of children" class="gt_row gt_center" style="color: #0000FF;">1.56</td>
+<td headers="# of children (Se)" class="gt_row gt_center" style="color: #0000FF;">0.05</td></tr>
+    <tr><td headers="partner" class="gt_row gt_left" style="color: #0000FF;">Ethiopia Save the Children</td>
+<td headers="Age" class="gt_row gt_center" style="color: #0000FF;">44.17</td>
+<td headers="Age (se)" class="gt_row gt_center" style="color: #0000FF;">0.40</td>
+<td headers="Female (in %)" class="gt_row gt_center" style="color: #0000FF;">22.85</td>
+<td headers="Female (se)" class="gt_row gt_center" style="color: #0000FF;">1.53</td>
+<td headers="Single (in %)" class="gt_row gt_center" style="color: #0000FF;">27.48</td>
+<td headers="Single (se)" class="gt_row gt_center" style="color: #0000FF;">1.62</td>
+<td headers="No education (in %)" class="gt_row gt_center" style="color: #0000FF;">79.92</td>
+<td headers="No education (se)" class="gt_row gt_center" style="color: #0000FF;">1.46</td>
+<td headers="Working (in %)" class="gt_row gt_center" style="color: #0000FF;">86.26</td>
+<td headers="Working (se)" class="gt_row gt_center" style="color: #0000FF;">1.25</td>
+<td headers="Disabled (in %)" class="gt_row gt_center" style="color: #0000FF;">3.30</td>
+<td headers="Disabled (se)" class="gt_row gt_center" style="color: #0000FF;">0.12</td>
+<td headers="# of children" class="gt_row gt_center" style="color: #0000FF;">1.82</td>
+<td headers="# of children (Se)" class="gt_row gt_center" style="color: #0000FF;">0.07</td></tr>
+    <tr><td headers="partner" class="gt_row gt_left" style="color: #0000FF;">South Sudan Save the Children</td>
+<td headers="Age" class="gt_row gt_center" style="color: #0000FF;">34.58</td>
+<td headers="Age (se)" class="gt_row gt_center" style="color: #0000FF;">0.51</td>
+<td headers="Female (in %)" class="gt_row gt_center" style="color: #0000FF;">86.37</td>
+<td headers="Female (se)" class="gt_row gt_center" style="color: #0000FF;">1.57</td>
+<td headers="Single (in %)" class="gt_row gt_center" style="color: #0000FF;">11.11</td>
+<td headers="Single (se)" class="gt_row gt_center" style="color: #0000FF;">1.44</td>
+<td headers="No education (in %)" class="gt_row gt_center" style="color: #0000FF;">71.49</td>
+<td headers="No education (se)" class="gt_row gt_center" style="color: #0000FF;">2.07</td>
+<td headers="Working (in %)" class="gt_row gt_center" style="color: #0000FF;">21.17</td>
+<td headers="Working (se)" class="gt_row gt_center" style="color: #0000FF;">1.87</td>
+<td headers="Disabled (in %)" class="gt_row gt_center" style="color: #0000FF;">16.14</td>
+<td headers="Disabled (se)" class="gt_row gt_center" style="color: #0000FF;">0.74</td>
+<td headers="# of children" class="gt_row gt_center" style="color: #0000FF;">3.05</td>
+<td headers="# of children (Se)" class="gt_row gt_center" style="color: #0000FF;">0.15</td></tr>
+    <tr><td headers="partner" class="gt_row gt_left" style="color: #0000FF;">South Sudan World Vision</td>
+<td headers="Age" class="gt_row gt_center" style="color: #0000FF;">36.58</td>
+<td headers="Age (se)" class="gt_row gt_center" style="color: #0000FF;">0.63</td>
+<td headers="Female (in %)" class="gt_row gt_center" style="color: #0000FF;">53.97</td>
+<td headers="Female (se)" class="gt_row gt_center" style="color: #0000FF;">2.61</td>
+<td headers="Single (in %)" class="gt_row gt_center" style="color: #0000FF;">25.75</td>
+<td headers="Single (se)" class="gt_row gt_center" style="color: #0000FF;">2.29</td>
+<td headers="No education (in %)" class="gt_row gt_center" style="color: #0000FF;">40.27</td>
+<td headers="No education (se)" class="gt_row gt_center" style="color: #0000FF;">2.57</td>
+<td headers="Working (in %)" class="gt_row gt_center" style="color: #0000FF;">21.92</td>
+<td headers="Working (se)" class="gt_row gt_center" style="color: #0000FF;">2.17</td>
+<td headers="Disabled (in %)" class="gt_row gt_center" style="color: #0000FF;">22.47</td>
+<td headers="Disabled (se)" class="gt_row gt_center" style="color: #0000FF;">1.18</td>
+<td headers="# of children" class="gt_row gt_center" style="color: #0000FF;">3.24</td>
+<td headers="# of children (Se)" class="gt_row gt_center" style="color: #0000FF;">0.13</td></tr>
+    <tr><td headers="partner" class="gt_row gt_left" style="color: #0000FF;">Global average (without sampling weights applied)</td>
+<td headers="Age" class="gt_row gt_center" style="color: #0000FF;">40.46</td>
+<td headers="Age (se)" class="gt_row gt_center" style="color: #0000FF;">0.16</td>
+<td headers="Female (in %)" class="gt_row gt_center" style="color: #0000FF;">38.05</td>
+<td headers="Female (se)" class="gt_row gt_center" style="color: #0000FF;">0.67</td>
+<td headers="Single (in %)" class="gt_row gt_center" style="color: #0000FF;">23.15</td>
+<td headers="Single (se)" class="gt_row gt_center" style="color: #0000FF;">0.58</td>
+<td headers="No education (in %)" class="gt_row gt_center" style="color: #0000FF;">56.27</td>
+<td headers="No education (se)" class="gt_row gt_center" style="color: #0000FF;">0.68</td>
+<td headers="Working (in %)" class="gt_row gt_center" style="color: #0000FF;">51.68</td>
+<td headers="Working (se)" class="gt_row gt_center" style="color: #0000FF;">0.69</td>
+<td headers="Disabled (in %)" class="gt_row gt_center" style="color: #0000FF;">13.31</td>
+<td headers="Disabled (se)" class="gt_row gt_center" style="color: #0000FF;">0.18</td>
+<td headers="# of children" class="gt_row gt_center" style="color: #0000FF;">2.49</td>
+<td headers="# of children (Se)" class="gt_row gt_center" style="color: #0000FF;">0.03</td></tr>
+    <tr><td headers="partner" class="gt_row gt_left" style="color: #0000FF;">Global average (sampling weights applied)</td>
+<td headers="Age" class="gt_row gt_center" style="color: #0000FF;">41.03</td>
+<td headers="Age (se)" class="gt_row gt_center" style="color: #0000FF;">0.25</td>
+<td headers="Female (in %)" class="gt_row gt_center" style="color: #0000FF;">39.96</td>
+<td headers="Female (se)" class="gt_row gt_center" style="color: #0000FF;">0.99</td>
+<td headers="Single (in %)" class="gt_row gt_center" style="color: #0000FF;">20.70</td>
+<td headers="Single (se)" class="gt_row gt_center" style="color: #0000FF;">0.79</td>
+<td headers="No education (in %)" class="gt_row gt_center" style="color: #0000FF;">58.24</td>
+<td headers="No education (se)" class="gt_row gt_center" style="color: #0000FF;">0.99</td>
+<td headers="Working (in %)" class="gt_row gt_center" style="color: #0000FF;">52.75</td>
+<td headers="Working (se)" class="gt_row gt_center" style="color: #0000FF;">0.99</td>
+<td headers="Disabled (in %)" class="gt_row gt_center" style="color: #0000FF;">15.14</td>
+<td headers="Disabled (se)" class="gt_row gt_center" style="color: #0000FF;">0.77</td>
+<td headers="# of children" class="gt_row gt_center" style="color: #0000FF;">2.46</td>
+<td headers="# of children (Se)" class="gt_row gt_center" style="color: #0000FF;">0.03</td></tr>
+  </tbody>
+  <tfoot class="gt_sourcenotes">
+    <tr>
+      <td class="gt_sourcenote" style="color: #0000FF;" colspan="15">Note: 'se' refers to standard errors<br>
+                                     Source: Baseline 2022/23 © CONSORTIUM</td>
+    </tr>
+  </tfoot>
+  
+</table>
+</div>
+</body>
+</html>
