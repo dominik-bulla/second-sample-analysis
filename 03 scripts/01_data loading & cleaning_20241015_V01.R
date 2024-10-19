@@ -153,22 +153,25 @@ grid <- grid %>%
   mutate(noschool = ifelse(edu_level == "Never_attended_school", 1, 0))  %>%
   mutate(working = ifelse(working == "yesd", 1, 0)) %>%
   mutate(gender = ifelse(gender == "Female", 1, 0)) %>%
-  rename("female" = gender) %>%
-  mutate(gender = ifelse(gender == "Female", 1, 0)) %>%
+  mutate(maritalstatus = ifelse(maritalstatus == "Divorced" | maritalstatus == "Single"  | maritalstatus == "Widowed", 1, 0)) %>%
+  rename("female" = gender,
+         "single" = maritalstatus) 
 
-  
-baseline$maritalstatus_cg
-  
+# Clean up the age variable.
+# There are some weird entries such as '-1' as well as some above 100. Those below 18 and above 100 were coded as NA
+grid <- grid %>%
+  mutate(age = ifelse(age < 18 | age > 99, NA, age))
+
 # Select relevant variables
 grid <- grid %>%
   select(index, index2,
-         name, relationship, age, female, maritalstatus,		
+         name, relationship, age, female, single,		
          children,	childrenMany,	
          enrollment, edu_level,	noschool,	
          working,			
          pwd) 
 
-baseline$maritalstatus_cg
+
 
 # Merge baseline grid and baseline main survey --------------------------- --------------------------- ---------------------------
 # We need to merge the baseline grid with the baseline main survey. 
