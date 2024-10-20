@@ -77,13 +77,6 @@ project_population_table <- gt(project_population) %>%
   )  
 gtsave(project_population_table, filename = "04 results/population_size.png")
 
-data <- data.frame(
-  group = c("Control", "Treatment"),
-  description = c("Group 1 is the control\nIt has normal conditions", 
-                  "Group 2 is the treatment\nIt has experimental conditions"),
-  mean = c(3.5, 4.2),
-  se = c(0.15, 0.20)
-)
 
 # determine the total number of project beneficiaries
 project_population %>% 
@@ -317,6 +310,6 @@ caregivers_sociodemographics_table <- gt(caregivers) %>%
     style = cell_text(color = "blue"),
     locations = cells_source_notes())
 gtsave(caregivers_sociodemographics_table, filename = "04 results/caregivers_sociodemographics.png")
-rm(n)
+rm(sample_size)
 
 

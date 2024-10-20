@@ -32,11 +32,12 @@ library(janitor)
 
 
 # Import baseline data --------------------------- --------------------------- ---------------------------
-# Import the data from kobo toolbox. The credentials are listed below. 
+# Note: the main bulk of the data is pulled from Kobo toolbox through a live API. 
+# The credentials have been removed below. Thus, running the script will NOT result in pulling in the data. 
 
 kobo_setup(url = "https://kf.kobotoolbox.org/",
            token = kobo_token(username = "domib",
-                              password = "!23KeZA2023",
+                              password = "*****",
                               url = "https://kf.kobotoolbox.org"))
 assets <- kobo_asset_list()
 uid <- assets %>%
@@ -191,13 +192,11 @@ grid <- merge(grid, caregivers, by = "index2", all.x = TRUE) %>%
   select(-c(caregiver, index2, name)) 
 
 colnames(grid)[colnames(grid) != "index"] <- paste0(colnames(grid)[colnames(grid) != "index"], "_cg")    
-
 baseline <- merge(baseline, grid, by = "index") 
 rm(grid, caregivers)
 
 
 # Create and population overview table by partners and sub-group --------------------------- --------------------------- ---------------------------
-
 project_population <- read_excel("01 raw data/Beneficiary table_20221006.xlsx") %>%
   rename("organisation" = Partner) %>%
   mutate(organisation = ifelse(organisation == "Plan", "Plan International", organisation)) %>%
@@ -211,7 +210,6 @@ project_population <- project_population %>%
 
 
 # Create and baseline sample overview table by partners and sub-group --------------------------- --------------------------- ---------------------------
-
 # Create baseline overview table on percentage across partners and sub-groups. 
 baseline_sample <- as.data.frame.matrix(table(baseline$partner, baseline$subgroup)) %>%
   mutate(Partner = rownames(.)) %>%
