@@ -27,6 +27,7 @@ options(scipen = 999)
 library(readxl)
 library(tidyverse)
 library(robotoolbox)
+library(janitor)
 
 
 
@@ -195,10 +196,9 @@ baseline <- merge(baseline, grid, by = "index")
 rm(grid, caregivers)
 
 
+# Create and population overview table by partners and sub-group --------------------------- --------------------------- ---------------------------
 
-# Determine sampling weights --------------------------- --------------------------- ---------------------------
-# Create population overview table on percentage across partners and sub-groups. 
-prop_pop <- read_excel("01 raw data/Beneficiary table_20221006.xlsx") %>%
+project_population <- read_excel("01 raw data/Beneficiary table_20221006.xlsx") %>%
   rename("organisation" = Partner) %>%
   mutate(organisation = ifelse(organisation == "Plan", "Plan International", organisation)) %>%
   mutate(organisation = ifelse(organisation == "Terres des Hommes", "Terre des Hommes", organisation)) %>%
@@ -206,33 +206,84 @@ prop_pop <- read_excel("01 raw data/Beneficiary table_20221006.xlsx") %>%
   select(partner, Hosts, IDPs, Refugees) %>%
   arrange(partner) 
 
-# Turn overview table into percentage (sum arcoss columns and rows is 100%)
-prop_pop[2:4] <- round(prop_pop[2:4] / sum(prop_pop[2:4]), 4)
+project_population <- project_population %>%
+  adorn_totals("row")
+
+
+# Create and baseline sample overview table by partners and sub-group --------------------------- --------------------------- ---------------------------
 
 # Create baseline overview table on percentage across partners and sub-groups. 
+baseline_sample <- as.data.frame.matrix(table(baseline$partner, baseline$subgroup)) %>%
+  mutate(Partner = rownames(.)) %>%
+  select(Partner, Hosts, IDPs, Refugees) %>% 
+  `rownames<-`( NULL )
+baseline_sample <- baseline_sample %>%
+  adorn_totals("row")
+
 # Turn overview table into percentage (sum arcoss columns and rows is 100%)
 prop_baseline <- round(prop.table(table(baseline$partner, baseline$subgroup)), 4)
+
+
+
+# Determine sampling weights --------------------------- --------------------------- ---------------------------
+
+# Turn overview table into percentage (sum arcoss columns and rows is 100%)
+prop_pop <- project_population %>%
+  filter(partner != "Total")
+prop_pop[2:4] <- round(prop_pop[2:4] / sum(prop_pop[2:4]), 4)
+
 
 # Create matrix with weights 
 weights <- prop_pop[,2:4]/ prop_baseline
 row.names(weights) <- row.names(prop_baseline)
 
+# Clean up weights
+weights <- weights %>%
+  mutate(Hosts = round(Hosts, 2),
+         IDPs = round(IDPs, 2),
+         Refugees = round(Refugees, 2)) %>%
+  mutate(Hosts = ifelse(is.infinite(Hosts), NA, Hosts),
+         IDPs = ifelse(is.nan(IDPs), NA, IDPs),
+         Refugees = ifelse(is.nan(Refugees), NA, Refugees)) %>%
+  mutate(Partner = rownames(.)) %>%
+  select(Partner, Hosts, IDPs, Refugees) %>% 
+  `rownames<-`( NULL )
+
+
 # Incorporate sampling weights into the baseline survey
 baseline$weights <- 0
-for(partner in rownames(weights)) {
+for(partner in weights$Partner) {
   for(group in colnames(weights)) {
-    value <- weights[rownames(weights) == partner, colnames(weights) == group]
+    value <- weights[weights$Partner == partner, colnames(weights) == group]
     baseline$weights[baseline$partner == partner & baseline$subgroup == group] <- value
   }
 }
-rm(group, partner, value, prop_baseline, prop_pop, weights)
+baseline$weights <- as.numeric(baseline$weights)
+rm(group, partner, value, prop_baseline)
 
 
 
-# Save dataset --------------------------- --------------------------- ---------------------------
+# Anonymization of partners --------------------------- --------------------------- ---------------------------
+# We not depict the real names of partners
+
+baseline <- baseline %>%
+  mutate(partner = paste0(substr(partner, nchar(partner)-2, nchar(partner)), substr(partner, 1, 2)))
+project_population <-  project_population %>%
+  mutate(partner = paste0(substr(partner, nchar(partner)-2, nchar(partner)), substr(partner, 1, 2))) %>%
+  mutate(partner = ifelse(partner == "talTo", "Total", partner))
+baseline_sample <-  baseline_sample %>%
+  mutate(Partner = paste0(substr(Partner, nchar(Partner)-2, nchar(Partner)), substr(Partner, 1, 2))) %>%
+  mutate(Partner = ifelse(Partner == "talTo", "Total", Partner))  
+weights <-  weights %>%
+  mutate(Partner = paste0(substr(Partner, nchar(Partner)-2, nchar(Partner)), substr(Partner, 1, 2))) %>%
+  mutate(Partner = ifelse(Partner == "talTo", "Total", Partner))  
+
+
+
+# Save data --------------------------- --------------------------- ---------------------------
 write.csv(baseline, "02 processed data/baseline_clean_20230323.csv")
-
-
-
+write.csv(project_population, "02 processed data/in-country_project_population_data_20230323.csv", row.names = FALSE)
+write.csv(baseline_sample, "02 processed data/baseline_samples_20230323.csv", row.names = FALSE)
+write.csv(weights, "02 processed data/baseline_sampling_weights_20230323.csv", row.names = FALSE)
 
 

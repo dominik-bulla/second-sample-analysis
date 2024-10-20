@@ -31,12 +31,164 @@ library(gt)
 
 # Load data --------------------------- --------------------------- ---------------------------
 baseline <- read.csv("02 processed data/baseline_clean_20230323.csv")
+project_population <- read.csv("02 processed data/in-country_project_population_data_20230323.csv")
+baseline_sample <- read.csv("02 processed data/baseline_samples_20230323.csv")
+weights <- read.csv("02 processed data/baseline_sampling_weights_20230323.csv")
 
 
 
-# The analysis of the caregiver socio-demographic data (partner specific) --------------------------- --------------------------- ---------------------------
-# standard errros defined as standard deviation/ sqrt(length)
+# Create an overview table of the in-country project populations  (table 1) --------------------------- --------------------------- ---------------------------
+project_population_table <- gt(project_population) %>%
+  tab_options(
+    heading.align = "left"
+  ) %>%
+  # load data
+  fmt_number(columns = c(partner,
+                         Hosts, IDPs, Refugees), decimals = 0) %>%
+  tab_source_note(source_note = html("Source: project documentation © CONSORTIUM")) %>%
+  # change the depiction of the column headers
+  cols_label(
+    partner = html("Implementing<br>partner"),
+    Hosts = html("Host<br>communities"),
+    IDPs = html("Internally<br>displaced people"), 
+    Refugees = html("International<br>refugees")) %>%
+  #format column headers
+  cols_align(
+    align = "center",
+    columns = c(partner,
+                Hosts, IDPs, Refugees)
+  ) %>%
+  # change font color to color of the client
+  tab_style(
+    style = cell_text(color = "blue", size = px(12)),
+    locations = cells_column_labels(columns = everything())
+  ) %>%
+  tab_style(
+    style = cell_text(color = "blue", size = px(10)),
+    locations = cells_body(columns = everything())
+  ) %>%
+  tab_style(
+    style = cell_text(color = "blue", size = px(12)),
+    locations = cells_source_notes()
+  ) %>%
+  tab_style(
+    style = cell_text(color = "blue", size = px(6)),
+    locations = cells_source_notes()
+  )  
+gtsave(project_population_table, filename = "04 results/population_size.png")
 
+data <- data.frame(
+  group = c("Control", "Treatment"),
+  description = c("Group 1 is the control\nIt has normal conditions", 
+                  "Group 2 is the treatment\nIt has experimental conditions"),
+  mean = c(3.5, 4.2),
+  se = c(0.15, 0.20)
+)
+
+# determine the total number of project beneficiaries
+project_population %>% 
+  select(Hosts, IDPs, Refugees) %>%
+  mutate(sumrow = rowSums(.))
+
+
+
+# Create an overview table of the baseline samples (table 2) --------------------------- --------------------------- ---------------------------
+baseline_sample_table <- gt(baseline_sample) %>%
+  tab_options(
+    heading.align = "left"
+  ) %>%
+  # load data
+  fmt_number(columns = c(Partner,
+                         Hosts, IDPs, Refugees), decimals = 0) %>%
+  tab_source_note(source_note = html("Source: baseline 2022/23 © CONSORTIUM")) %>%
+  # change the depiction of the column headers
+  cols_label(
+    Partner = html("Implementing<br>partner"),
+    Hosts = html("Host<br>communities"),
+    IDPs = html("Internally<br>displaced people"), 
+    Refugees = html("International<br>refugees")) %>%
+  #format column headers
+  cols_align(
+    align = "center",
+    columns = c(Partner,
+                Hosts, IDPs, Refugees)
+  ) %>%
+  # change font color to color of the client
+  tab_style(
+    style = cell_text(color = "blue", size = px(12)),
+    locations = cells_column_labels(columns = everything())
+  ) %>%
+  tab_style(
+    style = cell_text(color = "blue", size = px(10)),
+    locations = cells_body(columns = everything())
+  ) %>%
+  tab_style(
+    style = cell_text(color = "blue", size = px(12)),
+    locations = cells_source_notes()
+  ) %>%
+  tab_style(
+    style = cell_text(color = "blue", size = px(6)),
+    locations = cells_source_notes()
+  )  
+gtsave(baseline_sample_table, filename = "04 results/baseline_samples.png")
+
+# determine the total baseline sample size 
+baseline_sample %>% 
+  select(Hosts, IDPs, Refugees) %>%
+  mutate(sumrow = rowSums(.))
+
+
+
+# Create an overview table of the baseline sampling weights (table 3) --------------------------- --------------------------- ---------------------------
+weights_table <- gt(weights) %>%
+  tab_options(
+    heading.align = "left"
+  ) %>%
+  # load data
+  fmt_number(columns = c(Partner,
+                         Hosts, IDPs, Refugees), decimals = 2) %>%
+  tab_source_note(source_note = html("Source: baseline 2022/23 © CONSORTIUM")) %>%
+  # change the depiction of the column headers
+  cols_label(
+    Partner = html("Implementing<br>partner"),
+    Hosts = html("Host<br>communities"),
+    IDPs = html("Internally<br>displaced people"), 
+    Refugees = html("International<br>refugees")) %>%
+  #format column headers
+  cols_align(
+    align = "center",
+    columns = c(Partner,
+                Hosts, IDPs, Refugees)
+  ) %>%
+  # change font color to color of the client
+  tab_style(
+    style = cell_text(color = "blue", size = px(12)),
+    locations = cells_column_labels(columns = everything())
+  ) %>%
+  tab_style(
+    style = cell_text(color = "blue", size = px(10)),
+    locations = cells_body(columns = everything())
+  ) %>%
+  tab_style(
+    style = cell_text(color = "blue", size = px(12)),
+    locations = cells_source_notes()
+  ) %>%
+  tab_style(
+    style = cell_text(color = "blue", size = px(6)),
+    locations = cells_source_notes()
+  )  
+gtsave(weights_table, filename = "04 results/baseline_weights.png")
+
+
+
+# The analysis of the caregiver socio-demographic data (table 4) --------------------------- --------------------------- ---------------------------
+# Below are the steps that lead to table 4 in the main text. 
+# The steps are as follows: 1) create summary stats that are partner specific; 2) create the global unweighted average;
+# 3) create the global weighted average; 4) merge the summary tables and produce overview table
+# Rseults f 2) and 3) highlight the effects of applying sampling weights. 
+# Note: standard errors defined as standard deviation/ sqrt(length)
+
+# Step 1: create summary stats that are partner specific
 caregivers <- baseline %>%
   group_by(partner) %>%
   dplyr::summarise(Age = round(mean(age_cg, na.rm = TRUE), 2),
@@ -56,10 +208,8 @@ caregivers <- baseline %>%
 
 
 
-# The analysis of the caregiver socio-demographic data (global averages without sampling weights) --------------------------- --------------------------- ---------------------------
-# This socio-demographic summary does not incorporate sampling weights 
-
-caregivers_global <- baseline %>%
+# Step 2: create the global unweighted average 
+caregivers_global_unweighted <- baseline %>%
   dplyr::summarise(Age = round(mean(age_cg, na.rm = TRUE), 2),
                    `Age (se)` = round(sd(age_cg, na.rm = TRUE)/ sqrt(length(age_cg)), 2),
                    `Female (in %)`  = round(mean(female_cg, na.rm = TRUE), 4) * 100,
@@ -74,16 +224,13 @@ caregivers_global <- baseline %>%
                    `Disabled (se)`  = round(mean(pwd_cg, na.rm = TRUE)/ sqrt(length(pwd_cg)), 4) * 100,                   
                    `# of children` = round(mean(childrenMany_cg, na.rm = TRUE), 2),
                    `# of children (Se)` = round(sd(childrenMany_cg, na.rm = TRUE)/ sqrt(length(childrenMany_cg)), 2)) %>%
-  mutate(partner = "Global average (without sampling weights applied)")
+  mutate(partner = "Global average (unweighted)")
 
-
-# The analysis of the caregiver socio-demographic data (global averages with sampling weights) --------------------------- --------------------------- ---------------------------
-# This socio-demographic summary incorporates sampling weights 
-
+# Step 3: create the global weighted average 
 # Define the baseline dataset as a complex survey design. 
 baseline_design <- svydesign(ids = ~1, weights = ~weights, data = baseline)
 
-caregivers_global_weights <- data.frame(partner = "Global average (sampling weights applied)",
+caregivers_global_weighted <- data.frame(partner = "Global average (weighted)",
                                 Age = round(mean(svymean(~age_cg, baseline_design, na.rm = TRUE)), 2),
                                 "Age (se)" = round((SE(svymean(~age_cg, baseline_design, na.rm = TRUE)))[1,1], 2),
                                 `Female (in %)` = round(mean(svymean(~female_cg, baseline_design, na.rm = TRUE)), 4) * 100,
@@ -99,19 +246,14 @@ caregivers_global_weights <- data.frame(partner = "Global average (sampling weig
                                 `# of children` = round(mean(svymean(~childrenMany_cg, baseline_design, na.rm = TRUE)), 2),
                                 `# of children (Se)` = round((SE(svymean(~childrenMany_cg, baseline_design, na.rm = TRUE)))[1,1], 2))
 # Rename the table to make it match the naming of the previous two summary tables. 
-colnames(caregivers_global_weights) <- colnames(caregivers)
+colnames(caregivers_global_weighted) <- colnames(caregivers)
 
+# Step 4: merge the summary tables and produce overview table
+caregivers <- rbind(caregivers, caregivers_global_unweighted, caregivers_global_weighted)
+rm(caregivers_global_unweighted, caregivers_global_weighted)
 
-
-# Produce summary table --------------------------- --------------------------- ---------------------------
-
-caregivers <- rbind(caregivers, caregivers_global, caregivers_global_weights)
-rm(caregivers_global_weights, caregivers_global)
-
-n <- length(baseline$X)
-caregivers_sociodemographics <- gt(caregivers) %>%
-  tab_header(title = "Selected socio-demographic characteristics of caregivers surveyed",
-             subtitle = paste("n = ", n)) %>%
+sample_size <- length(baseline$X)
+caregivers_sociodemographics_table <- gt(caregivers) %>%
   tab_options(
     heading.align = "left"
   ) %>%
@@ -125,7 +267,7 @@ caregivers_sociodemographics <- gt(caregivers) %>%
                          `Disabled (in %)`, `Disabled (se)`,
                          `# of children`, `# of children (Se)`), decimals = 2) %>%
   tab_source_note(source_note = html("Note: 'se' refers to standard errors<br>
-                                     Source: Baseline 2022/23 © CONSORTIUM")) %>%
+                                     Source: baseline 2022/23 © CONSORTIUM")) %>%
   # change the depiction of the column headers
   cols_label(
     partner = "Partner",
@@ -142,8 +284,7 @@ caregivers_sociodemographics <- gt(caregivers) %>%
     `Disabled (in %)` = html("Disabled<br>(in %)"), 
     `Disabled (se)` = "se",
     `# of children` = html("# of<br>children"),
-    `# of children (Se)` = "se"
-  ) %>%
+    `# of children (Se)` = "se") %>%
   #format column headers
   cols_align(
     align = "center",
@@ -155,7 +296,7 @@ caregivers_sociodemographics <- gt(caregivers) %>%
                 `Disabled (in %)`, `Disabled (se)`,
                 `# of children`, `# of children (Se)`)
   ) %>%
-  # change font colour to colour of the client
+  # change font color to color of the client
   tab_style(
     style = cell_text(color = "blue"),
     locations = cells_title(groups = c("title", "subtitle"))
@@ -174,19 +315,8 @@ caregivers_sociodemographics <- gt(caregivers) %>%
   ) %>%
   tab_style(
     style = cell_text(color = "blue"),
-    locations = cells_source_notes()
-  )
-gtsave(caregivers_sociodemographics, filename = "04 results/caregivers_sociodemographics.html")
+    locations = cells_source_notes())
+gtsave(caregivers_sociodemographics_table, filename = "04 results/caregivers_sociodemographics.png")
 rm(n)
-
-
-# methodology
-# 1) include sampling weights
-# 2) you need a table with total populations
-# 3) you need a table with sample size
-# 4) include sampling weights in annex
-# 5) mention standard errors
-# 6) mention results
-
 
 
